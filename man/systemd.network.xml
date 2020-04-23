@@ -2007,6 +2007,17 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><varname>StaticLease=</varname></term>
+        <listitem>
+          <para>Set a static lease for the server. Takes a MAC addres and and IPv4 address
+          separated with a space (MAC IPv4). This option can be specified multiple times.
+          If an empty string is specified, then all options specified earlier
+          are cleared. Defaults to unset.</para>
+        </listitem>
+      </varlistentry>
+
+
     </variablelist>
   </refsect1>
 
