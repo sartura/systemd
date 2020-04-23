@@ -2015,6 +2015,16 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><varname>StaticLease=</varname></term>
+        <listitem>
+          <para>Set a static DHCP lease to assign a pre-set IPv4 address to a specific
+          device based on its MAC address. Takes a MAC address and IPv4 address separated
+          with whitespace. This setting can be specified multiple times. If an empty string
+          is specified, then all options specified earlier are cleared. Defaults to unset.</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
   </refsect1>
 
