@@ -580,6 +580,14 @@ int config_parse_dhcp_server_lpr_servers(
 
 }
 
+static void dhcp_client_id_freep(DHCPClientId **p) {
+        if (!*p)
+                return;
+
+        free((*p)->data);
+        free(*p);
+}
+
 int config_parse_dhcp_static_leases(
                 const char *unit,
                 const char *filename,
@@ -648,7 +656,7 @@ int config_parse_dhcp_static_leases(
                 return 0;
         }
 
-        _cleanup_free_ DHCPClientId *c = new(DHCPClientId, 1);
+        _cleanup_(dhcp_client_id_freep) DHCPClientId *c = new(DHCPClientId, 1);
         if (!c)
                 return log_oom();
         c->data = malloc(ETH_ALEN + 1);
@@ -677,6 +685,13 @@ int config_parse_dhcp_static_leases(
                 return 0;
         }
 
-        TAKE_PTR(lease);
+        sd_dhcp_static_lease *removed_lease = NULL;
+        removed_lease = ordered_hashmap_remove(*static_leases, c);
+        if (removed_lease == NULL) {
+                log_syntax(unit, LOG_ERR, filename, line, r,
+                           "Failed to remove DHCPv4 static lease '%s', ignoring assignment: %m", rvalue);
+                return 0;
+        }
+
         return 0;
 }
